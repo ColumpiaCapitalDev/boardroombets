@@ -1,0 +1,23 @@
+{
+  "name": "boardroom-bets-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord community bot for Boardroom Bets.",
+  "main": "src/index.js",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "check": "node --check src/index.js && node --check src/config.js && node --check src/auth.js && node --check src/commands.js && node --check src/content.js && node --check src/features-state.js && node --check src/betting-tools.js && node --check src/panels.js && node --check src/rules-reaction.js && node --check src/pick-helper.js && node --check src/live-scores.js && node --check src/ban-audit.js && node --check src/post-composer.js && node --check src/watermark.js && node --check src/tickets.js && node --check src/moderation.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.26.4",
+    "dotenv": "^17.4.2",
+    "sharp": "^0.35.2"
+  },
+  "overrides": {
+    "undici": "6.28.0"
+  }
+}
