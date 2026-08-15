@@ -5,7 +5,7 @@ const recapPattern = /\b(?:recap|results?|final record|sweep|went \d|graded|cash
 
 function isHelperMessage(message) {
   return message.author.id === message.client.user.id && message.components.some((row) =>
-    row.components.some((component) => component.customId === 'hoodie_pick:read')
+    row.components.some((component) => component.customId === 'boardroom_pick:read')
   );
 }
 
@@ -20,8 +20,8 @@ function pickHelperPayload(config) {
     ],
     components: [
       new ActionRowBuilder().addComponents(
-        new ButtonBuilder().setCustomId('hoodie_pick:read').setLabel('How to Play').setStyle(ButtonStyle.Primary),
-        new ButtonBuilder().setCustomId('hoodie_pick:bankroll').setLabel('Bankroll Guide').setStyle(ButtonStyle.Secondary),
+        new ButtonBuilder().setCustomId('boardroom_pick:read').setLabel('How to Play').setStyle(ButtonStyle.Primary),
+        new ButtonBuilder().setCustomId('boardroom_pick:bankroll').setLabel('Bankroll Guide').setStyle(ButtonStyle.Secondary),
         new ButtonBuilder().setLabel('Upgrade').setStyle(ButtonStyle.Link).setURL(config.premiumUrl)
       ),
     ],

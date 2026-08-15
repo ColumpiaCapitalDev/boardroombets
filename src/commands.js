@@ -131,6 +131,33 @@ const commands = [
         .setName('bankroll')
         .setDescription('Post or refresh the bankroll management panel.')
         .addChannelOption((option) => option.setName('channel').setDescription('Optional destination channel.').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('announcements')
+        .setDescription('Post or refresh the official announcements introduction.')
+        .addChannelOption((option) => option.setName('channel').setDescription('Optional destination channel.').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('gain-access')
+        .setDescription('Post or refresh the Winible access instructions.')
+        .addChannelOption((option) => option.setName('channel').setDescription('Optional destination channel.').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('free-premium')
+        .setDescription('Post or refresh the free-community and VIP overview.')
+        .addChannelOption((option) => option.setName('channel').setDescription('Optional destination channel.').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('socials')
+        .setDescription('Post or refresh the official Boardroom links.')
+        .addChannelOption((option) => option.setName('channel').setDescription('Optional destination channel.').addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement))
+    )
+    .addSubcommand((subcommand) =>
+      subcommand.setName('all').setDescription('Post or refresh every permanent Boardroom setup panel.')
     ),
   new SlashCommandBuilder()
     .setName('features')

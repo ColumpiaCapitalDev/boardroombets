@@ -145,11 +145,11 @@ async function handleBettingCommand(interaction, config) {
 
 async function handleBettingButton(interaction, config) {
   if (!interaction.isButton()) return false;
-  if (interaction.customId === 'hoodie_pick:read') {
+  if (interaction.customId === 'boardroom_pick:read') {
     await interaction.reply(playHelpPayload(config, 'basics'));
     return true;
   }
-  if (interaction.customId === 'hoodie_pick:bankroll') {
+  if (interaction.customId === 'boardroom_pick:bankroll') {
     await interaction.reply(bankrollGuidePayload(config));
     return true;
   }

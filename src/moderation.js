@@ -63,8 +63,8 @@ async function detectViolation(message, config) {
 function reviewComponents(userId, disabled = false) {
   return [
     new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('hoodie_mod:ban:' + userId).setLabel('BAN').setStyle(ButtonStyle.Danger).setDisabled(disabled),
-      new ButtonBuilder().setCustomId('hoodie_mod:allow:' + userId).setLabel('ALLOW').setStyle(ButtonStyle.Success).setDisabled(disabled)
+      new ButtonBuilder().setCustomId('boardroom_mod:ban:' + userId).setLabel('BAN').setStyle(ButtonStyle.Danger).setDisabled(disabled),
+      new ButtonBuilder().setCustomId('boardroom_mod:allow:' + userId).setLabel('ALLOW').setStyle(ButtonStyle.Success).setDisabled(disabled)
     ),
   ];
 }
@@ -113,7 +113,7 @@ async function moderateMessage(message, config) {
 }
 
 async function handleModerationButton(interaction, config) {
-  if (!interaction.isButton() || !interaction.customId.startsWith('hoodie_mod:')) return false;
+  if (!interaction.isButton() || !interaction.customId.startsWith('boardroom_mod:')) return false;
   if (!isAdminInteraction(interaction, config)) {
     await interaction.reply({ content: 'Only Boardroom Bets admins can review moderation actions.', flags: MessageFlags.Ephemeral });
     return true;

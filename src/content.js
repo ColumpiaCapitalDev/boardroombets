@@ -16,7 +16,7 @@ function navigationRows(config) {
     ),
     new ActionRowBuilder().addComponents(
       new ButtonBuilder().setLabel('Gain Access').setStyle(ButtonStyle.Link).setURL(channelUrl(config.channels.gainAccess)),
-      new ButtonBuilder().setLabel('Join Winible').setStyle(ButtonStyle.Link).setURL(config.premiumUrl),
+      new ButtonBuilder().setLabel('Boardroom VIP').setStyle(ButtonStyle.Link).setURL(config.premiumUrl),
       new ButtonBuilder().setLabel('Need Help').setStyle(ButtonStyle.Link).setURL(channelUrl(config.channels.needHelp)),
       new ButtonBuilder().setLabel('Socials').setStyle(ButtonStyle.Link).setURL(channelUrl(config.channels.socials))
     ),
@@ -37,8 +37,8 @@ function buildWelcomePayload(config, member) {
   const memberNumber = ordinal(member && member.guild ? member.guild.memberCount : 0);
   const embed = new EmbedBuilder()
     .setColor(config.brandColor)
-    .setTitle('Your Boardroom Bets Starting Point')
-    .setDescription('Everything you need to get situated, unlock the picks, and reach the team is below.')
+    .setTitle('Welcome to the Boardroom')
+    .setDescription('Get settled, learn how the room works, and choose the level of access that fits you.')
     .addFields(
       {
         name: 'Start Here',
@@ -50,9 +50,9 @@ function buildWelcomePayload(config, member) {
       {
         name: 'Unlock the Picks',
         value:
-          'Winible is the only way to unlock paid pick access.\n' +
-          'Join Winible: [Join Winible](' + config.premiumUrl + ')\n' +
-          'Then connect your access: <#' + config.channels.gainAccess + '>',
+          'Winible is the official way to unlock Boardroom VIP.\n' +
+          'View the Boardroom: [Open Winible](' + config.premiumUrl + ')\n' +
+          'After joining, connect your access: <#' + config.channels.gainAccess + '>',
       },
       {
         name: 'Need Anything?',
@@ -61,7 +61,7 @@ function buildWelcomePayload(config, member) {
           'Announcements: <#' + config.channels.announcements + '>\n' +
           'Official socials: <#' + config.channels.socials + '>',
       },
-      { name: 'Getting Started', value: 'Use `/guide` whenever you need directions around the server.' }
+      { name: 'The Room', value: 'Free picks: <#' + config.channels.freePicks + '>\nVIP card: <#' + config.channels.boardroomPicks + '>\nOfficial site: [boardroombets.com](' + config.links.website + ')' }
     )
     .setFooter({ text: 'You are the ' + memberNumber + ' member to join! • Boardroom Bets' });
 
@@ -81,9 +81,9 @@ function buildGuidePayload(config) {
     .setTitle(config.serverName + ' Server Guide')
     .setDescription('Everything you need is organized below. Use the buttons to jump directly to the right place.')
     .addFields(
-      { name: 'Community', value: '<#' + config.channels.rules + '>\n<#' + config.channels.announcements + '>\n<#' + config.channels.freeChat + '>\n<#' + config.channels.needHelp + '>', inline: true },
-      { name: 'Membership', value: '<#' + config.channels.gainAccess + '>\n<#' + config.channels.premium + '>\n<#' + config.channels.bankroll + '>', inline: true },
-      { name: 'Connect', value: '<#' + config.channels.socials + '>\n[Join Winible](' + config.premiumUrl + ')', inline: true }
+      { name: 'Start Here', value: '<#' + config.channels.rules + '>\n<#' + config.channels.announcements + '>\n<#' + config.channels.bankroll + '>\n<#' + config.channels.needHelp + '>', inline: true },
+      { name: 'The Plays', value: '<#' + config.channels.freePicks + '>\n<#' + config.channels.boardroomPicks + '>\n<#' + config.channels.freeChat + '>\n<#' + config.channels.wins + '>', inline: true },
+      { name: 'Unlock & Connect', value: '<#' + config.channels.gainAccess + '>\n<#' + config.channels.premium + '>\n<#' + config.channels.socials + '>\n[Boardroom VIP](' + config.premiumUrl + ')', inline: true }
     )
     .setFooter({ text: 'Boardroom Bets • Use /guide whenever you need directions' });
 
@@ -106,7 +106,7 @@ function buildTicketPanelPayload(config) {
     components: [
       new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-          .setCustomId('hoodie_ticket_open')
+          .setCustomId('boardroom_ticket_open')
           .setLabel('Open a Ticket')
           .setEmoji('🎫')
           .setStyle(ButtonStyle.Primary)
@@ -131,7 +131,7 @@ function buildTicketIntroPayload(config, member) {
     components: [
       new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-          .setCustomId('hoodie_ticket_close:' + member.id)
+          .setCustomId('boardroom_ticket_close:' + member.id)
           .setLabel('Close Ticket')
           .setStyle(ButtonStyle.Danger)
       ),

@@ -13,7 +13,7 @@ const {
 const { isAdminInteraction, requireAdmin } = require('./auth');
 const { buildTicketIntroPayload, buildTicketPanelPayload } = require('./content');
 
-const PANEL_BUTTON_ID = 'hoodie_ticket_open';
+const PANEL_BUTTON_ID = 'boardroom_ticket_open';
 const reviewPending = new Set();
 const closingTickets = new Set();
 
@@ -119,7 +119,7 @@ async function securityLog(guild, config, description, title = 'Ticket Activity'
 async function findOpenTicket(guild, config, userId) {
   await guild.channels.fetch();
   return guild.channels.cache.find((channel) =>
-    channel.parentId === config.ticketCategoryId && channel.topic === 'hoodie-ticket:' + userId
+    channel.parentId === config.ticketCategoryId && channel.topic === 'boardroom-ticket:' + userId
   ) || null;
 }
 
@@ -173,7 +173,7 @@ async function openTicket(interaction, config, featureState) {
     name: 'ticket-' + (safeName || interaction.user.id),
     type: ChannelType.GuildText,
     parent: config.ticketCategoryId,
-    topic: 'hoodie-ticket:' + interaction.user.id,
+    topic: 'boardroom-ticket:' + interaction.user.id,
     permissionOverwrites,
     reason: 'Help ticket opened by ' + interaction.user.tag,
   });
@@ -187,7 +187,7 @@ function reviewComponents(openerId) {
   for (let rating = 1; rating <= 5; rating += 1) {
     ratingRow.addComponents(
       new ButtonBuilder()
-        .setCustomId('hoodie_ticket_review:' + openerId + ':' + rating)
+        .setCustomId('boardroom_ticket_review:' + openerId + ':' + rating)
         .setLabel(String(rating))
         .setEmoji('⭐')
         .setStyle(rating >= 4 ? ButtonStyle.Success : ButtonStyle.Secondary)
@@ -196,7 +196,7 @@ function reviewComponents(openerId) {
   return [
     ratingRow,
     new ActionRowBuilder().addComponents(
-      new ButtonBuilder().setCustomId('hoodie_ticket_skip:' + openerId).setLabel('Close Without Review').setStyle(ButtonStyle.Danger)
+      new ButtonBuilder().setCustomId('boardroom_ticket_skip:' + openerId).setLabel('Close Without Review').setStyle(ButtonStyle.Danger)
     ),
   ];
 }
@@ -268,11 +268,11 @@ async function handleTicketInteraction(interaction, config, featureState) {
     await openTicket(interaction, config, featureState);
     return true;
   }
-  if (interaction.customId.startsWith('hoodie_ticket_close:')) {
+  if (interaction.customId.startsWith('boardroom_ticket_close:')) {
     await closeTicket(interaction, config, interaction.customId.split(':')[1], featureState);
     return true;
   }
-  if (interaction.customId.startsWith('hoodie_ticket_review:')) {
+  if (interaction.customId.startsWith('boardroom_ticket_review:')) {
     const [, openerId, rating] = interaction.customId.split(':');
     if (interaction.user.id !== openerId) {
       await interaction.reply({ content: 'Only the member who opened this ticket can submit its review.', flags: MessageFlags.Ephemeral });
@@ -282,7 +282,7 @@ async function handleTicketInteraction(interaction, config, featureState) {
     await finalizeTicket(interaction, config, openerId, '⭐'.repeat(Number(rating)) + ' (' + rating + '/5)');
     return true;
   }
-  if (interaction.customId.startsWith('hoodie_ticket_skip:')) {
+  if (interaction.customId.startsWith('boardroom_ticket_skip:')) {
     const openerId = interaction.customId.split(':')[1];
     if (interaction.user.id !== openerId && !isAdminInteraction(interaction, config)) {
       await interaction.reply({ content: 'Only the ticket owner or an admin can close without a review.', flags: MessageFlags.Ephemeral });
@@ -299,7 +299,7 @@ async function handleTicketPanelCommand(interaction, config, featureState) {
   if (!(await requireAdmin(interaction, config, 'manage support tickets'))) return;
   const subcommand = interaction.options.getSubcommand();
   if (subcommand === 'transcript') {
-    const openerId = String(interaction.channel.topic || '').startsWith('hoodie-ticket:')
+    const openerId = String(interaction.channel.topic || '').startsWith('boardroom-ticket:')
       ? interaction.channel.topic.split(':')[1]
       : '';
     if (!openerId) {

@@ -16,7 +16,7 @@ const { buildGuidePayload, buildWelcomePayload } = require('./content');
 const { FEATURE_LABELS, FeatureState } = require('./features-state');
 const { buildScoreReply } = require('./live-scores');
 const { handleModerationButton, moderateMessage } = require('./moderation');
-const { postPermanentPanel, upgradePanelPayload } = require('./panels');
+const { postBoardroomSetup, postPermanentPanel, upgradePanelPayload } = require('./panels');
 const { handlePickMessage } = require('./pick-helper');
 const { openPostComposer, submitPostComposer } = require('./post-composer');
 const { ensureRulesAcceptedRole, handleRulesReaction } = require('./rules-reaction');
@@ -166,16 +166,29 @@ async function handleSetupCommand(interaction) {
     return;
   }
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-  if (subcommand === 'rules' && featureState.isEnabled('rulesRole')) await ensureRulesAcceptedRole(interaction.guild, config);
+  if ((subcommand === 'rules' || subcommand === 'all') && featureState.isEnabled('rulesRole')) await ensureRulesAcceptedRole(interaction.guild, config);
+  if (subcommand === 'all') {
+    const messages = await postBoardroomSetup(interaction.guild, config);
+    await interaction.editReply({ content: 'Refreshed ' + Object.keys(messages).length + ' permanent Boardroom panels.' });
+    return;
+  }
+  const panelType = {
+    'gain-access': 'gainAccess',
+    'free-premium': 'freePremium',
+  }[subcommand] || subcommand;
   const defaults = {
     guide: config.channels.welcome,
     rules: config.channels.rules,
     upgrade: config.channels.premium,
     bankroll: config.channels.bankroll,
+    announcements: config.channels.announcements,
+    gainAccess: config.channels.gainAccess,
+    freePremium: config.channels.freePremium,
+    socials: config.channels.socials,
   };
-  const target = interaction.options.getChannel('channel')?.id || defaults[subcommand];
-  const message = await postPermanentPanel(interaction.guild, config, subcommand, target);
-  await interaction.editReply({ content: 'Permanent ' + subcommand + ' panel posted: ' + message.url });
+  const target = interaction.options.getChannel('channel')?.id || defaults[panelType];
+  const message = await postPermanentPanel(interaction.guild, config, panelType, target);
+  await interaction.editReply({ content: 'Permanent ' + panelType + ' panel posted: ' + message.url });
 }
 
 async function handleFeatureCommand(interaction) {
@@ -244,12 +257,12 @@ client.on('interactionCreate', async (interaction) => {
   try {
     if (await handleModerationButton(interaction, config)) return;
     if (await handleTicketInteraction(interaction, config, featureState)) return;
-    if (interaction.isButton() && interaction.customId.startsWith('hoodie_pick:') && !featureState.isEnabled('bettingTools')) {
+    if (interaction.isButton() && interaction.customId.startsWith('boardroom_pick:') && !featureState.isEnabled('bettingTools')) {
       await interaction.reply({ content: 'Betting tools are temporarily paused.', flags: MessageFlags.Ephemeral });
       return;
     }
     if (await handleBettingButton(interaction, config)) return;
-    if (interaction.isModalSubmit() && interaction.customId.startsWith('hoodie_post:') && !featureState.isEnabled('postComposer')) {
+    if (interaction.isModalSubmit() && interaction.customId.startsWith('boardroom_post:') && !featureState.isEnabled('postComposer')) {
       await interaction.reply({ content: 'The post composer is temporarily paused.', flags: MessageFlags.Ephemeral });
       return;
     }

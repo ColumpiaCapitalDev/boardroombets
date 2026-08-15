@@ -57,7 +57,7 @@ async function openPostComposer(interaction, config) {
   }
 
   const modal = new ModalBuilder()
-    .setCustomId('hoodie_post:' + interaction.user.id + ':' + target.id)
+    .setCustomId('boardroom_post:' + interaction.user.id + ':' + target.id)
     .setTitle('Post to #' + target.name)
     .addLabelComponents(
       input('title', 'Title (optional)', TextInputStyle.Short, false, 'New Boardroom Bets update', 256),
@@ -71,7 +71,7 @@ async function openPostComposer(interaction, config) {
 }
 
 async function submitPostComposer(interaction, config) {
-  if (!interaction.customId.startsWith('hoodie_post:')) return false;
+  if (!interaction.customId.startsWith('boardroom_post:')) return false;
   if (!(await requireAdmin(interaction, config, 'publish server posts'))) return true;
 
   const [, ownerId, channelId] = interaction.customId.split(':');
