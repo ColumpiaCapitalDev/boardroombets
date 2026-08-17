@@ -119,7 +119,8 @@ function socialsPanelPayload(config) {
         .setDescription('Stay connected with the official Boardroom Bets platforms. Use these links so you know you are following the real accounts.')
         .addFields(
           { name: 'Official website', value: '[boardroombets.com](' + config.links.website + ')' },
-          { name: 'Instagram', value: '[@txrichjd](' + config.links.instagram + ')' },
+          { name: 'Founder Instagram', value: '[@txrichjd](' + config.links.instagram + ')' },
+          { name: 'Boardroom Bets Instagram', value: '[@boardroombets](' + config.links.boardroomInstagram + ')' },
           { name: 'VIP membership', value: '[The Boardroom on Winible](' + config.premiumUrl + ')' }
         )
         .setFooter({ text: 'Only trust links posted by Boardroom staff' }),
@@ -127,7 +128,8 @@ function socialsPanelPayload(config) {
     components: [
       new ActionRowBuilder().addComponents(
         linkButton('Official Website', config.links.website, '🌐'),
-        linkButton('Instagram', config.links.instagram, '📸'),
+        linkButton('@txrichjd', config.links.instagram, '📸'),
+        linkButton('@boardroombets', config.links.boardroomInstagram, '📸'),
         linkButton('Boardroom VIP', config.premiumUrl, '💎')
       ),
     ],

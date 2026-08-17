@@ -74,6 +74,7 @@ const config = {
   links: {
     website: parseUrl(process.env.WEBSITE_URL, 'https://boardroombets.com/'),
     instagram: parseUrl(process.env.INSTAGRAM_URL, 'https://www.instagram.com/txrichjd'),
+    boardroomInstagram: parseUrl(process.env.BOARDROOM_INSTAGRAM_URL, 'https://www.instagram.com/boardroombets'),
     weekly: parseUrl(process.env.VIP_WEEKLY_URL, 'https://www.winible.com/checkout/1584642474020721482?pid=1584642474037498700'),
     monthly: parseUrl(process.env.VIP_MONTHLY_URL, 'https://www.winible.com/checkout/1584642474020721482?pid=1584642474041693005'),
     yearly: parseUrl(process.env.VIP_YEARLY_URL, 'https://www.winible.com/checkout/1584642474020721482?pid=1584642474041693007'),
